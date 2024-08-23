@@ -20,8 +20,8 @@ const page = async ({ params }) => {
                             <p>{address}</p>
                             <p>£{(cost / 100).toFixed(2)}</p>
                             <p>{places}</p>
-                            <p>Chip Timed: {chipTimed}</p>
-                            <p>Parking: {parking}</p>
+                            <p>Chip Timed: {chipTimed === true ? 'Yes' : 'No'}</p>
+                            <p>Parking: {parking === true ? 'Yes' : 'No'}</p>
                             <p>Terrain: {terrain}</p>
 
 

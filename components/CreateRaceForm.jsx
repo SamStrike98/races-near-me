@@ -43,11 +43,11 @@ const CreateRaceForm = () => {
                     postcode,
                     distance,
                     description,
-                    cost,
+                    cost: cost * 100,
                     raceDate,
                     places,
-                    chipTimed,
-                    parking,
+                    chipTimed: chipTimed === 'Yes' ? true : false,
+                    parking: parking === 'Yes' ? true : false,
                     terrain
                 })
             }
@@ -58,7 +58,7 @@ const CreateRaceForm = () => {
             if (response.error) {
                 setError(response.error.message)
             } else {
-                router.push('/')
+                // router.push('/')
             }
         } catch (error) {
             console.error(e)
@@ -104,7 +104,7 @@ const CreateRaceForm = () => {
 
                 {/* Distance */}
                 <label className="input input-bordered flex items-center gap-2" htmlFor='distance'>
-                    <input type="text" className="grow" placeholder="Distance" id="distance" name="distance" />
+                    <input type="number" className="grow" placeholder="Distance" id="distance" name="distance" />
                 </label>
 
                 {/* Description */}
@@ -114,27 +114,43 @@ const CreateRaceForm = () => {
 
                 {/* Cost */}
                 <label className="input input-bordered flex items-center gap-2" htmlFor='cost'>
-                    <input type="text" className="grow" placeholder="Cost" id="cost" name="cost" />
+                    <input type="number" className="grow" placeholder="Cost" id="cost" name="cost" />
                 </label>
 
                 {/* Race Date */}
                 <label className="input input-bordered flex items-center gap-2" htmlFor='raceDate'>
-                    <input type="text" className="grow" placeholder="Race Date" id="raceDate" name="raceDate" />
+                    <input type="date" className="grow" placeholder="Race Date" id="raceDate" name="raceDate" />
                 </label>
 
                 {/* Places */}
                 <label className="input input-bordered flex items-center gap-2" htmlFor='places'>
-                    <input type="text" className="grow" placeholder="Places" id="places" name="places" />
+                    <input type="number" className="grow" placeholder="Places" id="places" name="places" />
                 </label>
 
                 {/* Chip Timed */}
-                <label className="input input-bordered flex items-center gap-2" htmlFor='chipTimed'>
-                    <input type="text" className="grow" placeholder="Chip Timed" id="chipTimed" name="chipTimes" />
+                <label className="form-control w-full max-w-xs" htmlFor='chipTimed'>
+                    <div className="label">
+                        <span className="label-text">Chip Timed</span>
+                    </div>
+                    <select className="select select-bordered" id="chipTimed" name="chipTimed">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                    <div className="label">
+                    </div>
                 </label>
 
                 {/* Parking */}
-                <label className="input input-bordered flex items-center gap-2" htmlFor='parking'>
-                    <input type="text" className="grow" placeholder="Parking" id="parking" name="parking" />
+                <label className="form-control w-full max-w-xs" htmlFor='parking'>
+                    <div className="label">
+                        <span className="label-text">Parking</span>
+                    </div>
+                    <select className="select select-bordered" id="parking" name="parking">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                    <div className="label">
+                    </div>
                 </label>
 
                 {/* Terrain */}

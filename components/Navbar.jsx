@@ -26,6 +26,11 @@ const directorLinks = [
         title: 'Races',
         link: '/races'
     },
+    {
+        id: 3,
+        title: 'Create Race',
+        link: '/races/create-race'
+    }
 ]
 
 const Navbar = async () => {
