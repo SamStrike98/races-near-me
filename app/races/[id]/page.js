@@ -3,7 +3,7 @@ import React from 'react'
 const page = async ({ params }) => {
     const id = params.id
 
-    const res = await fetch(`http://localhost:3001/api/races/${id}`);
+    const res = await fetch(`http://localhost:3001/api/races/${id}`, { cache: 'no-store' });
     const { name, distance, address, description, cost, chipTimed, parking, terrain, raceDate, places } = await res.json();
     return (
         <div>

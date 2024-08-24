@@ -1,4 +1,5 @@
 import Race from "@/models/race-model";
+import { getCoordinatesFromPostcode } from "@/utils/getCoordinatesFromPostcode";
 
 // GET ALL RACES
 export async function getAllRaces() {
@@ -11,19 +12,31 @@ export async function getAllRaces() {
 }
 
 // GET ALL FILTERED RACES
-export async function getAllFilteredRaces(chipTimed, terrain, parking, distance) {
-    console.log(chipTimed, terrain, parking, distance)
+export async function getAllFilteredRaces(filtersObj, postcode, maxDistance) {
+    console.log('query', maxDistance)
+
+    console.log(postcode)
     // chipTimed === '' ? {$exists: true} : chipTimed;
     // terrain.length === 0 ? {$exists: true} : {$in: terrain}
     // parking === '' ? { $exists: true } : parking;
     // distance.length === 0 ? {$exists: true} : {$in: distance}
-    try {
 
-        // const races = await Race.aggregate([{ $match: { chipTimed: chipTimed === '' ? { $exists: true } : chipTimed, terrain: terrain.length === 0 ? { $exists: true } : { $in: terrain }, parking: parking === '' ? { $exists: true } : parking, distance: distance.length === 0 ? { $exists: true } : { $in: distance } } }]).select('_id name distance latitude longitude cost chipTimed parking terrain raceDate').sort({ raceDate: -1 }).lean();
+
+    try {
+        if (postcode !== '') {
+            const { lat, lon } = await getCoordinatesFromPostcode(postcode)
+            const obj = { near: { type: "Point", coordinates: [lon, lat] }, distanceField: "dist.calculated", maxDistance: maxDistance, includeLocs: "dist.location", spherical: true }
+            const races = await Race.aggregate([{ $geoNear: obj }, { $match: filtersObj }, { $sort: { 'raceDate': -1 } }]);
+            return races;
+        } else {
+            const races = await Race.aggregate([{ $match: filtersObj }, { $sort: { 'raceDate': -1 } }]);
+            return races;
+        }
 
         //Will need to refactor this using chipTimed==='true' to convert string to boolean **Not ideal**
-        const races = await Race.aggregate([{ $match: { chipTimed: chipTimed === 'All' ? { $exists: true } : chipTimed === 'true', terrain: terrain.length === 0 ? { $exists: true } : { $in: terrain }, parking: parking === 'All' ? { $exists: true } : parking === 'true', distance: distance.length === 0 ? { $exists: true } : { $in: distance } } }, { $sort: { 'raceDate': -1 } }]);
-        return races;
+        // const races = await Race.aggregate([{ $match: { chipTimed: chipTimed === 'All' ? { $exists: true } : chipTimed === 'true', terrain: terrain.length === 0 ? { $exists: true } : { $in: terrain }, parking: parking === 'All' ? { $exists: true } : parking === 'true', distance: distance.length === 0 ? { $exists: true } : { $in: distance } } }, { $sort: { 'raceDate': -1 } }]);
+
+
     } catch (error) {
         throw new Error(error)
     }

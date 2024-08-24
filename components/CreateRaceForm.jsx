@@ -41,7 +41,7 @@ const CreateRaceForm = () => {
                     name,
                     address: `${addressLine1}, ${addressLine2}, ${townCity}, ${county}, ${postcode}`,
                     postcode,
-                    distance,
+                    distance: distance.toString(),
                     description,
                     cost: cost * 100,
                     raceDate,
@@ -104,7 +104,7 @@ const CreateRaceForm = () => {
 
                 {/* Distance */}
                 <label className="input input-bordered flex items-center gap-2" htmlFor='distance'>
-                    <input type="number" className="grow" placeholder="Distance" id="distance" name="distance" />
+                    <input type="number" step=".01" className="grow" placeholder="Distance" id="distance" name="distance" />
                 </label>
 
                 {/* Description */}
@@ -114,7 +114,7 @@ const CreateRaceForm = () => {
 
                 {/* Cost */}
                 <label className="input input-bordered flex items-center gap-2" htmlFor='cost'>
-                    <input type="number" className="grow" placeholder="Cost" id="cost" name="cost" />
+                    <input type="number" step=".01" className="grow" placeholder="Cost" id="cost" name="cost" />
                 </label>
 
                 {/* Race Date */}

@@ -7,7 +7,7 @@ const raceSchema = new mongoose.Schema({
     },
     distance: {
         required: true,
-        type: Number
+        type: String
     },
     address: {
         required: true,
@@ -60,6 +60,10 @@ const raceSchema = new mongoose.Schema({
     stripeId: {
         required: true,
         type: String
+    },
+    location: {
+        required: true,
+        type: Object
     }
 });
 

@@ -28,7 +28,7 @@ export const POST = auth(async function (request) {
 
             // Form a DB Payload
             const newRace = {
-                name, distance, address, postcode, latitude: coordinates.lat, longitude: coordinates.lon, cost, raceDate, dateCreated, places, chipTimed, parking, terrain, description, stripeId: stripeId
+                name, distance, address, postcode, latitude: coordinates.lat, longitude: coordinates.lon, cost, raceDate, dateCreated, places, chipTimed, parking, terrain, description, stripeId: stripeId, location: { type: 'Point', coordinates: [coordinates.lon, coordinates.lat] }
             };
 
             // Update the DB
