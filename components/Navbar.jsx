@@ -37,8 +37,8 @@ const Navbar = async () => {
     const session = await auth();
     return (
 
-        <div className={`${!session?.user || session?.user.role === 'user' ? 'bg-green-500' : 'bg-blue-500'} w-full h-[80px]`}>
-            <ul>
+        <div className={`${!session?.user || session?.user.role === 'user' ? 'bg-green-500' : 'bg-primary text-white'} w-full h-[80px]`}>
+            <ul className='flex flex-row gap-5 h-full items-center font-bold text-lg'>
                 {!session?.user || session?.user.role === 'user' ?
                     userLinks.map(item => (
                         <Link href={item.link} key={item.id}>{item.title}</Link>

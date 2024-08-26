@@ -10,7 +10,7 @@ import { getCoordinatesFromPostcode } from "@/utils/getCoordinatesFromPostcode";
 export const POST = auth(async function (request) {
     if (request.auth?.user.role === 'director') {
         try {
-            const { name, address, postcode, distance, description, cost, raceDate, places, chipTimed, parking, terrain } = await request.json();
+            const { name, address, postcode, distance, description, cost, raceDate, places, chipTimed, parking, terrain, courseDetails, included, howToGetThere, locationDetails, faqs } = await request.json();
 
             // Create a DB Connection
             await dbConnect();
@@ -28,8 +28,10 @@ export const POST = auth(async function (request) {
 
             // Form a DB Payload
             const newRace = {
-                name, distance, address, postcode, latitude: coordinates.lat, longitude: coordinates.lon, cost, raceDate, dateCreated, places, chipTimed, parking, terrain, description, stripeId: stripeId, location: { type: 'Point', coordinates: [coordinates.lon, coordinates.lat] }
+                name, distance, address, postcode, latitude: coordinates.lat, longitude: coordinates.lon, cost, raceDate, dateCreated, places, chipTimed, parking, terrain, description, stripeId: stripeId, location: { type: 'Point', coordinates: [coordinates.lon, coordinates.lat] }, courseDetails, included, howToGetThere, locationDetails, faqs
             };
+
+            console.log('new Race', newRace)
 
             // Update the DB
             await createRace(newRace);

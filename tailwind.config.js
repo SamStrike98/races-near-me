@@ -15,5 +15,8 @@ module.exports = {
       },
     },
   },
+  daisyui: {
+    themes: ["lemonade"],
+  },
   plugins: [daisyui,],
 };

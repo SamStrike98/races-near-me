@@ -4,7 +4,7 @@ import { getCoordinatesFromPostcode } from "@/utils/getCoordinatesFromPostcode";
 // GET ALL RACES
 export async function getAllRaces() {
     try {
-        const races = await Race.find({}).select('_id name distance latitude longitude cost chipTimed parking terrain raceDate').sort({ raceDate: -1 }).lean();
+        const races = await Race.find({}).select('_id name distance latitude longitude cost chipTimed parking terrain raceDate').sort({ raceDate: 1 }).lean();
         return races;
     } catch (error) {
         throw new Error(error)
@@ -12,24 +12,16 @@ export async function getAllRaces() {
 }
 
 // GET ALL FILTERED RACES
-export async function getAllFilteredRaces(filtersObj, postcode, maxDistance) {
-    console.log('query', maxDistance)
-
-    console.log(postcode)
-    // chipTimed === '' ? {$exists: true} : chipTimed;
-    // terrain.length === 0 ? {$exists: true} : {$in: terrain}
-    // parking === '' ? { $exists: true } : parking;
-    // distance.length === 0 ? {$exists: true} : {$in: distance}
-
+export async function getAllFilteredRaces(match, location, maxDistance) {
 
     try {
-        if (postcode !== '') {
-            const { lat, lon } = await getCoordinatesFromPostcode(postcode)
+        if (location !== '') {
+            const { lat, lon } = await getCoordinatesFromPostcode(location)
             const obj = { near: { type: "Point", coordinates: [lon, lat] }, distanceField: "dist.calculated", maxDistance: maxDistance, includeLocs: "dist.location", spherical: true }
-            const races = await Race.aggregate([{ $geoNear: obj }, { $match: filtersObj }, { $sort: { 'raceDate': -1 } }]);
+            const races = await Race.aggregate([{ $geoNear: obj }, { $match: match }, { $sort: { 'raceDate': 1 } }]);
             return races;
         } else {
-            const races = await Race.aggregate([{ $match: filtersObj }, { $sort: { 'raceDate': -1 } }]);
+            const races = await Race.aggregate([{ $match: match }, { $sort: { 'raceDate': 1 } }]);
             return races;
         }
 

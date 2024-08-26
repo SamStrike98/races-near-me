@@ -6,6 +6,8 @@ import { useState } from "react";
 
 const CreateRaceForm = () => {
     const [error, setError] = useState("")
+    const [includedForm, setIncludedForm] = useState(1)
+    const [faqsForm, setFaqsForm] = useState(1)
 
     const router = useRouter()
 
@@ -29,8 +31,18 @@ const CreateRaceForm = () => {
             const chipTimed = formData.get("chipTimed");
             const parking = formData.get("parking");
             const terrain = formData.get("terrain");
+            const courseDetails = formData.get("courseDetails");
 
+            const included = []
+            Array(includedForm).fill('').map((item, index) => included.push(formData.get(`included${index + 1}`)))
 
+            const howToGetThere = formData.get("howToGetThere");
+            const locationDetails = formData.get("locationDetails");
+
+            const faqs = []
+            Array(faqsForm).fill('').map((item, index) => faqs.push(formData.get(`faqs${index + 1}`)))
+
+            console.log(locationDetails, howToGetThere, courseDetails)
 
             const response = await fetch("/api/races", {
                 method: "POST",
@@ -48,7 +60,13 @@ const CreateRaceForm = () => {
                     places,
                     chipTimed: chipTimed === 'Yes' ? true : false,
                     parking: parking === 'Yes' ? true : false,
-                    terrain
+                    terrain,
+                    courseDetails,
+                    included,
+                    howToGetThere,
+                    locationDetails,
+                    faqs
+
                 })
             }
             )
@@ -158,6 +176,41 @@ const CreateRaceForm = () => {
                     <input type="text" className="grow" placeholder="Terrain" id="terrain" name="terrain" />
                 </label>
 
+                {/* COURSE DETAILS */}
+                <label className="input input-bordered flex items-center gap-2" htmlFor='courseDetails'>
+                    <input type="text" className="grow" placeholder="Course Details" id="courseDetails" name="courseDetails" />
+                </label>
+
+                {/* INCLUDED */}
+                <div className="flex flex-col">
+                    {Array(includedForm).fill('').map((item, index) => (
+                        <label className="input input-bordered flex items-center gap-2" htmlFor={`included${index + 1}`}>
+                            <input type="text" className="grow" placeholder="What's Included" id={`included${index + 1}`} name={`included${index + 1}`} />
+                        </label>
+                    ))}
+                    <div onClick={() => setIncludedForm(includedForm + 1)}>Add</div>
+                </div>
+
+
+                {/* HOW TO GET THERE */}
+                <label className="input input-bordered flex items-center gap-2" htmlFor='howToGetThere'>
+                    <input type="text" className="grow" placeholder="How To Get There" id="howToGetThere" name="howToGetThere" />
+                </label>
+
+                {/* LOCATION DETAILS */}
+                <label className="input input-bordered flex items-center gap-2" htmlFor='locationDetails'>
+                    <input type="text" className="grow" placeholder="Location Details" id="locationDetails" name="locationDetails" />
+                </label>
+
+                {/* FAQs */}
+                <div className="flex flex-col">
+                    {Array(faqsForm).fill('').map((item, index) => (
+                        <label className="input input-bordered flex items-center gap-2" htmlFor={`faqs${index + 1}`}>
+                            <input type="text" className="grow" placeholder="FAQs" id={`faqs${index + 1}`} name={`faqs${index + 1}`} />
+                        </label>
+                    ))}
+                    <div onClick={() => setFaqsForm(faqsForm + 1)}>Add</div>
+                </div>
 
                 <button className="btn btn-neutral" type='submit'>Create Race</button>
             </form>

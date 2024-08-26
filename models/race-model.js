@@ -64,6 +64,26 @@ const raceSchema = new mongoose.Schema({
     location: {
         required: true,
         type: Object
+    },
+    courseDetails: {
+        required: true,
+        type: String
+    },
+    included: {
+        required: true,
+        type: Array
+    },
+    howToGetThere: {
+        required: true,
+        type: String
+    },
+    locationDetails: {
+        required: true,
+        type: String
+    },
+    faqs: {
+        required: true,
+        type: Array
     }
 });
 

@@ -12,17 +12,26 @@ export const GET = async (request) => {
         await dbConnect();
         console.log("Database connected");
 
-        console.log('route', request.nextUrl.searchParams.get('chipTimed'))
-        // const chipTimed = request.nextUrl.searchParams.get('chipTimed')
-        // const parking = request.nextUrl.searchParams.get('parking')
-        // const terrain = request.nextUrl.searchParams.get('terrain').split(",").filter(n => n)
-        // const distance = request.nextUrl.searchParams.get('distance').split(",").map(Number).filter(n => n !== 0)
         const searchParams = request.nextUrl.searchParams
 
-        const { filtersObj, postcode, maxDistance } = await createFiltersMatch(filtersArr, searchParams)
+
+        const chipTimed = searchParams.get('chipTimed')
+        const parking = searchParams.get('parking')
+        const terrain = searchParams.get('terrain').split(",").filter(n => n !== '0')
+        const distance = searchParams.get('distance').split(",").filter(n => n !== '0')
+        const location = searchParams.get('location')
+        const maxDistance = searchParams.get('maxDistance') === 'All' ? 10000000 : parseInt(searchParams.get('maxDistance')) * 1000
+
+        console.log('chipTimed', chipTimed, 'parking', parking, 'terrain', terrain, 'distance', distance, 'location', location, 'maxDistance', maxDistance)
+
+        // const { filtersObj, postcode, maxDistance } = await createFiltersMatch(filtersArr, searchParams)
 
 
-        const races = await getAllFilteredRaces(filtersObj, postcode, maxDistance);
+        const match = { 'chipTimed': chipTimed === 'All' ? { $exists: true } : chipTimed === 'true', 'parking': parking === 'All' ? { $exists: true } : parking === 'true', terrain: terrain.length > 0 ? { $in: terrain } : { $exists: true }, distance: distance.length > 0 ? { $in: distance } : { $exists: true } }
+
+
+        console.log(match)
+        const races = await getAllFilteredRaces(match, location, maxDistance);
 
 
         return new NextResponse(JSON.stringify(races), {

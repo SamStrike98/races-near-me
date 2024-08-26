@@ -35,8 +35,6 @@ export const filtersArr = [
             { id: 'Road', name: 'Road', value: 'Road' },
             { id: 'Track', name: 'Track', value: 'Track' },
             { id: 'Trail', name: 'Trail', value: 'Trail' },
-            { id: 'Grass', name: 'Grass', value: 'Grass' },
-            { id: 'Sand', name: 'Sand', value: 'Sand' }
         ],
         agg: 'match'
     },
